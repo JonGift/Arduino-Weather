@@ -29,21 +29,21 @@ void loop(){
   Serial.write(1);
   delay(1000);
   if(Serial.available() > 0){ //if Python speaks.
-    const char original_byte = Serial.read(); //take some data from Python.
-    int received_byte = atoi(&original_byte); //make it an int.
-    off(received_byte); //check to see if the first four led's updated.
-    if(received_byte == 1){ //do the cool stuff.
+    const char x = Serial.read(); //take some data from Python.
+    int something = atoi(&x); //make it an int.
+    off(something); //check to see if the first four led's updated.
+    if(something == 1){ //do the cool stuff.
       digitalWrite(led, HIGH);
-    }else if(received_byte == 2){
+    }else if(something == 2){
       digitalWrite(led2, HIGH);
-    }else if(received_byte == 3){
+    }else if(something == 3){
       digitalWrite(led3, HIGH);
-    }else if(received_byte == 4){
+    }else if(something == 4){
       digitalWrite(led4, HIGH);
-    }else if(received_byte == 6){
+    }else if(something == 6){
       digitalWrite(led6, HIGH);
       digitalWrite(led7, LOW);
-    }else if(received_byte == 7){
+    }else if(something == 7){
       digitalWrite(led7, HIGH);
       digitalWrite(led6, LOW);
     }
