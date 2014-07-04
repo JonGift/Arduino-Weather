@@ -8,7 +8,10 @@ ser = serial.Serial("COM3", 9600) #Start serial with Arduino on COM3
 
 def get_temp():
 	#Function that downloads data from the internet. I live in Post Falls, so it downloads Post Falls.
-	site = urllib.request.urlopen('http://forecast.weather.gov/MapClick.php?CityName=Post+Falls&state=ID&site=OTX&lat=47.7892&lon=-117.027#.U013SVcvm1c')
+	try:
+		site = urllib.request.urlopen('http://forecast.weather.gov/MapClick.php?CityName=Post+Falls&state=ID&site=OTX&lat=47.7892&lon=-117.027#.U013SVcvm1c')
+	except:
+		return 0
 	raw_site_data = str(site.read()) #log the data.
 	site.close()
 
@@ -16,7 +19,10 @@ def get_temp():
 
 	temp_str = re.search(r'(\d+)', forecast_line).group(0) #Evil bit level hacking (just kidding)
 	temp = int(temp_str) #Creates an int for the temperature.
-	return temp #returns a number like 85.
+	if temp:
+		return temp
+	else:
+		return 0 #returns a number like 85.
 
 statictime = datetime.date.today() #Used if you keep the Arduino running.
 statictemp = get_temp()
@@ -42,7 +48,13 @@ while True:
 		heat = '3'
 	elif temp < 65:
 		heat = '4'
-
-	ser.write(str(heat).encode()) #Sends the Arduino an encoded string.
+	
+	try:	
+		ser.write(str(heat).encode()) #Sends the Arduino an encoded string.
+	except:
+		try:
+			ser = serial.Serial("COM3", 9600)
+		except:
+			pass
 	time.sleep(3600) #Wait for an hour.
 		

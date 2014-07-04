@@ -6,3 +6,5 @@ Please note that you'll need six LED's, seven wires, six resistors, an Arduino a
 3. Find the COM port your Arduino's using.
 4. Open the Python code and change the COM port.
 5. Upload the Arduino code and run the Python script.
+
+If you shut off your computer with the program running, it won't continue. However, if you put it on standby it will resume when the computer restarts.
