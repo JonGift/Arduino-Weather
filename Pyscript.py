@@ -3,6 +3,7 @@ import re
 import serial
 import time
 import datetime
+from datetime import timedelta
 
 ser = serial.Serial("COM3", 9600) #Start serial with Arduino on COM3
 
@@ -27,12 +28,13 @@ def get_temp():
 statictime = datetime.date.today() #Used if you keep the Arduino running.
 statictemp = get_temp()
 
+
 ser.read() #You have to read before you can write.
 while True:
 	currenthour = datetime.datetime.now().hour #Used with line 21.
 	currenttime = datetime.date.today()
 	temp = get_temp()
-	if currenttime != statictime and (currenthour == 6 or currenthour == 8): #Used to update the second temperature bit.
+	if currenttime - statictime > timedelta(hours=24) and currenthour > 8: #Used to update the second temperature bit.
 		if temp > statictemp:
 			ser.write(str('6').encode())
 		elif temp <= statictemp:
